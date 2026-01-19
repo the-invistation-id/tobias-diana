@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Public+Sans:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Public+Sans:wght@300;400;700&family=Orbitron:wght@400;700&display=swap');
         
         @font-face {
             font-family: 'photograph';
@@ -46,8 +46,9 @@
 
         .font-photograph { font-family: 'photograph', cursive; }
         .font-seasons { font-family: 'seasons', serif; letter-spacing: 2px; }
+        .font-card { font-family: 'Orbitron', sans-serif; letter-spacing: 3px; }
 
-        /* Background Slideshow */
+        /* Latar Belakang Slideshow */
         .bg-slideshow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; background: #000;
@@ -61,13 +62,42 @@
         }
         .slide-item.active { opacity: 1; }
 
-        /* UI Elements */
+        /* UI Elemen */
         .card {
             background: rgba(18, 18, 18, 0.85);
             border: 1px solid rgba(197, 160, 89, 0.3);
             border-radius: 20px;
             padding: 30px 20px;
             margin-bottom: 25px;
+        }
+
+        /* Desain Kartu ATM Mandiri Terbaru */
+        .atm-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: left;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .atm-card::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1;
+        }
+        .chip {
+            width: 45px;
+            height: 35px;
+            background: linear-gradient(135deg, #f0d58e 0%, #c5a059 100%);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .mempelai-img {
@@ -126,7 +156,6 @@
         }
         .spin { animation: fa-spin 5s linear infinite; }
         
-        /* Ayat Styling */
         .quote-container {
             position: relative;
             padding: 20px;
@@ -144,6 +173,17 @@
             padding: 0 10px;
             color: var(--gold);
         }
+
+        /* QRIS Styling */
+        .qris-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -153,15 +193,15 @@
     <div id="yt-player-container" style="display:none;"><div id="player"></div></div>
     <div id="music-btn" onclick="toggleMusic()"><i id="music-icon" class="fas fa-compact-disc spin"></i></div>
 
-    <!-- Opening Overlay -->
+    <!-- Halaman Pembuka -->
     <div id="opening" class="fixed inset-0 z-[10000] bg-black flex flex-col justify-center items-center text-center transition-transform duration-1000">
         <div class="absolute inset-0 opacity-40">
-            <img src="https://i.ibb.co.com/xK1r98qH/IANM0711.jpg" class="w-full h-full object-cover">
+            <img src="https://i.ibb.co.com/GfzSkXMK/IANM0711.jpg" class="w-full h-full object-cover">
         </div>
         <div class="relative z-10 px-6">
             <h4 class="font-seasons text-xs uppercase mb-3 tracking-[4px]">The Wedding of</h4>
             <h1 class="font-photograph text-6xl text-gold mb-6">Tobias & Diana</h1>
-            <p class="text-xs italic mb-2">Kepada Bapak/Ibu/Sdr/i:</p>
+            <p class="text-xs italic mb-2">Kepada Bapak/Ibu/Saudara/i:</p>
             <h2 id="guest-name" class="font-bold text-2xl mb-10 uppercase tracking-widest">Tamu Undangan</h2>
             <button onclick="openInvitation()" class="btn-gold !w-auto px-10 shadow-2xl">Buka Undangan</button>
         </div>
@@ -170,14 +210,14 @@
     <div id="content" class="hidden">
         <div class="bg-slideshow" id="bg-slides"></div>
 
-        <!-- Home -->
+        <!-- Beranda -->
         <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-6">
             <div class="reveal">
                 <h4 class="font-seasons text-[10px] uppercase mb-4 tracking-[6px]">The Wedding of</h4>
                 <h1 class="font-photograph text-7xl text-gold">Tobias & Diana</h1>
                 <p class="mt-4 font-seasons tracking-[3px] text-sm uppercase">14 Februari 2026</p>
                 
-                <!-- Countdown -->
+                <!-- Hitung Mundur -->
                 <div class="flex gap-2 justify-center mt-10">
                     <div class="countdown-box"><span id="d" class="countdown-val">00</span><span class="countdown-label">Hari</span></div>
                     <div class="countdown-box"><span id="h" class="countdown-val">00</span><span class="countdown-label">Jam</span></div>
@@ -185,7 +225,6 @@
                     <div class="countdown-box"><span id="s" class="countdown-val">00</span><span class="countdown-label">Detik</span></div>
                 </div>
 
-                <!-- Ayat Alkitab -->
                 <div class="quote-container mt-12 max-w-xs mx-auto">
                     <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
                     <p class="text-xs italic leading-relaxed opacity-90 font-light">
@@ -198,31 +237,32 @@
 
         <!-- Profil -->
         <section id="couple" class="py-20 px-6 max-w-md mx-auto">
+            <h2 class="font-seasons text-2xl text-center mb-10 tracking-[4px] text-gold uppercase reveal">Bride and groom</h2>
             <div class="card reveal text-center">
                 <img src="https://i.ibb.co.com/N6x4VTyL/D-T0025.jpg" class="mempelai-img mb-5" alt="Tobias" loading="lazy">
                 <h2 class="font-photograph text-3xl text-gold mb-3">Sherwin Tobias Rama Sihombing, S.H.</h2>
-                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest leading-relaxed mb-4">Putra dari: Bapak Drs. Rudy Tumpal H. Sihombing & Ibu Deacy Maria Br. Lumbanraja</p>
+                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest leading-relaxed mb-4">Putra Dari: Bapak Drs. Rudy Tumpal H. Sihombing & Ibu Deacy Maria Br. Lumbanraja</p>
                 <a href="https://instagram.com/tobiassihombing" target="_blank" class="btn-outline-gold"><i class="fab fa-instagram"></i> @tobiassihombing</a>
             </div>
             <div class="text-center font-photograph text-6xl text-gold/30 my-10 reveal">&</div>
             <div class="card reveal text-center">
                 <img src="https://i.ibb.co.com/Sw6z8sm0/IMG-20260118-WA0000.jpg" class="mempelai-img mb-5" alt="Diana" loading="lazy">
                 <h2 class="font-photograph text-3xl text-gold mb-3">Bdn. Diana Br. Simamora, S.Keb.</h2>
-                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest leading-relaxed mb-4">Putri dari: Bapak Pdt. Marsihat Simamora & Ibu Risma Simanjuntak</p>
+                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest leading-relaxed mb-4">Putri Dari: Bapak Pdt. Marsihat Simamora & Ibu Risma Simanjuntak</p>
                 <a href="https://instagram.com/simamoradiana" target="_blank" class="btn-outline-gold"><i class="fab fa-instagram"></i> @simamoradiana</a>
             </div>
         </section>
 
-        <!-- Acara & Lokasi -->
+        <!-- Acara -->
         <section id="event" class="py-20 px-6 max-w-md mx-auto text-center">
-            <h2 class="font-seasons text-2xl mb-10 tracking-[4px] text-gold uppercase reveal">Save The Date</h2>
+            <h2 class="font-seasons text-2xl mb-10 tracking-[4px] text-gold uppercase reveal">save the date</h2>
             
             <div class="card reveal">
                 <i class="fas fa-church text-gold text-3xl mb-4"></i>
                 <h3 class="font-seasons text-xl text-gold mb-2 uppercase tracking-[2px]">Pemberkatan Nikah</h3>
                 <div class="w-12 h-[1px] bg-gold/50 mx-auto mb-4"></div>
                 <p class="font-bold text-sm mb-1 uppercase">Sabtu, 14 Februari 2026</p>
-                <p class="text-xs mb-4 italic opacity-80">Pukul 10.00 WIB - Selesai</p>
+                <p class="text-xs mb-4 italic opacity-80">10.00 WIB - Selesai</p>
                 <p class="font-bold text-sm mb-1 uppercase">GPI Hutaginjang</p>
                 <p class="text-[10px] mb-6 opacity-70 leading-relaxed px-4">Kel. Hutabulu, Kec. Siborongborong</p>
                 <a href="https://maps.app.goo.gl/qnXXXdFRy5obYsU8A" target="_blank" class="btn-gold !w-auto px-8 !text-[10px]"><i class="fas fa-map-marker-alt mr-2"></i>Lihat Lokasi</a>
@@ -230,64 +270,94 @@
 
             <div class="card reveal">
                 <i class="fas fa-users text-gold text-3xl mb-4"></i>
-                <h3 class="font-seasons text-xl text-gold mb-2 uppercase tracking-[2px]">Resepsi Adat</h3>
+                <h3 class="font-seasons text-xl text-gold mb-2 uppercase tracking-[2px]">Resepsi Pernikahan</h3>
                 <div class="w-12 h-[1px] bg-gold/50 mx-auto mb-4"></div>
                 <p class="font-bold text-sm mb-1 uppercase">Sabtu, 14 Februari 2026</p>
-                <p class="text-xs mb-4 italic opacity-80">Pukul 12.00 WIB - Selesai</p>
+                <p class="text-xs mb-4 italic opacity-80">12.00 WIB - Selesai</p>
                 <p class="font-bold text-sm mb-1 uppercase">Hutaginjang</p>
                 <p class="text-[10px] mb-6 opacity-70 leading-relaxed px-4">Kel. Hutabulu, Kec. Siborongborong</p>
                 <a href="https://maps.app.goo.gl/BLC6xoBnn2KtTYxY7" target="_blank" class="btn-gold !w-auto px-8 !text-[10px]"><i class="fas fa-map-marker-alt mr-2"></i>Lihat Lokasi</a>
             </div>
         </section>
 
-        <!-- Our Gallery -->
+        <!-- Galeri Kami -->
         <section id="gallery" class="py-20 px-6 max-w-md mx-auto">
             <h2 class="font-seasons text-2xl text-center mb-10 tracking-[4px] text-gold uppercase reveal">Our Gallery</h2>
             <div class="grid grid-cols-2 gap-3 reveal" id="grid-container"></div>
         </section>
 
-        <!-- Hadiah Digital -->
+        <!-- Hadiah -->
         <section id="gift" class="py-20 px-6 max-w-md mx-auto text-center">
             <h2 class="font-seasons text-2xl mb-10 tracking-[4px] text-gold uppercase reveal">Wedding Gift</h2>
-            <div class="card reveal">
-                <div class="bg-white p-2 inline-block rounded-lg mb-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="h-6" alt="Mandiri">
+            
+            <!-- Kartu ATM Tobias (Mandiri Terbaru) -->
+            <div class="atm-card reveal relative">
+                <div class="flex justify-between items-start mb-2 relative z-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="h-5 brightness-200" alt="Mandiri">
+                    <span class="text-[8px] font-bold text-white/50 tracking-widest uppercase">Platinum Debit</span>
                 </div>
-                <p class="text-2xl font-black text-gold tracking-widest mb-1">1010014210759</p>
-                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-4">A.N SHERWIN TOBIAS RAMA</p>
-                <button onclick="copyAcc('1010014210759')" class="btn-gold !w-auto px-6 !py-2 text-[10px]">Salin Rekening</button>
-            </div>
-            <div class="card reveal">
-                <div class="bg-white p-2 inline-block rounded-lg mb-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="h-6" alt="Mandiri">
+                <div class="chip"></div>
+                <p class="font-card text-lg text-white mb-4 relative z-10">1010 0142 1075 9</p>
+                <div class="flex justify-between items-end relative z-10">
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-[7px] text-white/50 uppercase mb-1">Account Holder</p>
+                        <p class="text-[10px] font-bold text-white tracking-widest truncate">SHERWIN TOBIAS RAMA</p>
+                    </div>
+                    <button onclick="copyAcc('1010014210759')" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition active:scale-95 flex items-center gap-1 border border-white/20 ml-2">
+                        <i class="fas fa-copy"></i> SALIN
+                    </button>
                 </div>
-                <p class="text-2xl font-black text-gold tracking-widest mb-1">1260006667025</p>
-                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-4">A.N DIANA SIMAMORA</p>
-                <button onclick="copyAcc('1260006667025')" class="btn-gold !w-auto px-6 !py-2 text-[10px]">Salin Rekening</button>
+                <div class="absolute bottom-[-20%] right-[-10%] opacity-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="w-40" alt="">
+                </div>
             </div>
-            <div class="card reveal flex flex-col items-center">
-                <p class="font-seasons text-gold text-lg mb-4 tracking-[2px]">QRIS PAYMENT</p>
-                <div class="bg-white p-4 rounded-xl max-w-[200px]">
-                    <img src="https://i.ibb.co.com/Q39fK3nh/QRIS.png" class="w-full h-auto rounded" alt="QRIS">
+
+            <!-- Kartu ATM Diana (Mandiri Terbaru) -->
+            <div class="atm-card reveal relative">
+                <div class="flex justify-between items-start mb-2 relative z-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="h-5 brightness-200" alt="Mandiri">
+                    <span class="text-[8px] font-bold text-white/50 tracking-widest uppercase">Platinum Debit</span>
+                </div>
+                <div class="chip"></div>
+                <p class="font-card text-lg text-white mb-4 relative z-10">1260 0066 6702 5</p>
+                <div class="flex justify-between items-end relative z-10">
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-[7px] text-white/50 uppercase mb-1">Account Holder</p>
+                        <p class="text-[10px] font-bold text-white tracking-widest truncate">DIANA SIMAMORA</p>
+                    </div>
+                    <button onclick="copyAcc('1260006667025')" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition active:scale-95 flex items-center gap-1 border border-white/20 ml-2">
+                        <i class="fas fa-copy"></i> SALIN
+                    </button>
+                </div>
+                <div class="absolute bottom-[-20%] right-[-10%] opacity-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png" class="w-40" alt="">
+                </div>
+            </div>
+
+            <!-- QRIS Diperbesar Maksimal -->
+            <div class="reveal mt-10">
+                <div class="qris-container">
+                    <img src="https://i.ibb.co.com/Q39fK3nh/QRIS.png" class="w-full h-auto rounded-lg" alt="QRIS">
+                    <p class="text-black text-[10px] font-bold mt-4 tracking-widest uppercase">Scan QRIS</p>
                 </div>
             </div>
         </section>
 
-        <!-- Konfirmasi Kehadiran & Ucapan -->
+        <!-- RSVP (Wishes) -->
         <section id="rsvp" class="py-20 px-6 max-w-md mx-auto">
             <div class="card reveal">
-                <h2 class="font-seasons text-2xl text-center mb-6 tracking-[1px] text-gold uppercase leading-tight">Konfirmasi Kehadiran & Ucapan</h2>
+                <h2 class="font-seasons text-2xl text-center mb-6 tracking-[1px] text-gold uppercase leading-tight">Wishes</h2>
                 <form id="form-rsvp" onsubmit="submitRsvp(event)">
                     <input type="text" id="in-name" placeholder="Nama Lengkap" class="form-input" required>
                     <select id="in-status" class="form-input" required>
-                        <option value="" disabled selected>Konfirmasi Kehadiran</option>
-                        <option value="Hadir">Hadir</option>
-                        <option value="Tidak">Tidak Hadir</option>
+                        <option value="" disabled selected>Status Kehadiran</option>
+                        <option value="Hadir">Saya Akan Hadir</option>
+                        <option value="Tidak">Maaf, Tidak Bisa Hadir</option>
                     </select>
-                    <textarea id="in-msg" placeholder="Ucapan & Doa Restu" class="form-input h-28" required></textarea>
-                    <button type="submit" class="btn-gold">Kirim Konfirmasi</button>
+                    <textarea id="in-msg" placeholder="Ucapan Doa & Harapan" class="form-input h-28" required></textarea>
+                    <button type="submit" class="btn-gold">Kirim</button>
                 </form>
-                <div id="success" class="hidden text-center text-green-500 font-bold p-4">Pesan Terkirim! Terima kasih.</div>
+                <div id="success" class="hidden text-center text-green-500 font-bold p-4">Terima kasih atas konfirmasi Anda!</div>
             </div>
         </section>
 
@@ -295,24 +365,24 @@
         <section id="closing" class="py-20 px-8 max-w-md mx-auto text-center reveal">
             <h2 class="font-photograph text-5xl text-gold mb-6">Terima Kasih</h2>
             <p class="text-sm leading-relaxed font-light opacity-90 mb-8">
-                Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai.
+                Merupakan kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kami.
             </p>
             <p class="text-[10px] uppercase tracking-[4px] mb-4">Kami yang berbahagia,</p>
             <h3 class="font-photograph text-4xl text-gold">Tobias & Diana</h3>
-            <p class="text-[10px] uppercase tracking-[2px] mt-4 opacity-60">Beserta keluarga besar</p>
+            <p class="text-[10px] uppercase tracking-[2px] mt-4 opacity-60">Serta seluruh keluarga besar</p>
         </section>
 
         <footer class="py-10 text-center opacity-20 text-[9px] font-bold tracking-[6px]">TOBIAS & DIANA 2026</footer>
         <div class="h-20"></div>
     </div>
 
-    <!-- Nav Bar -->
+    <!-- Navigasi -->
     <nav class="bottom-nav">
         <a href="#home" class="nav-link active"><i class="fas fa-home"></i>HOME</a>
-        <a href="#couple" class="nav-link"><i class="fas fa-heart"></i>PROFIL</a>
+        <a href="#couple" class="nav-link"><i class="fas fa-heart"></i>MEMPELAI</a>
         <a href="#event" class="nav-link"><i class="fas fa-calendar-alt"></i>ACARA</a>
         <a href="#gallery" class="nav-link"><i class="fas fa-images"></i>GALERI</a>
-        <a href="#gift" class="nav-link"><i class="fas fa-gift"></i>KADO</a>
+        <a href="#gift" class="nav-link"><i class="fas fa-gift"></i>HADIAH</a>
         <a href="#rsvp" class="nav-link"><i class="fas fa-edit"></i>RSVP</a>
     </nav>
 
@@ -329,38 +399,63 @@
     <script>
         let player, isPlay = false;
         const images = [
-            'https://i.ibb.co.com/xK1r98qH/IANM0711.jpg',
-            'https://i.ibb.co.com/4ZwDqb4W/IANM0449.jpg',
-            'https://i.ibb.co.com/GQjy6XYx/IANM0930.jpg',
-            'https://i.ibb.co.com/JXht0Ng/IANM1005.jpg',
-            'https://i.ibb.co.com/Y7ZG7G5D/IANM1076.jpg',
-            'https://i.ibb.co.com/yFWrjKr3/IANM1118.jpg'
+            'https://i.ibb.co.com/GfzSkXMK/IANM0711.jpg',
+            'https://i.ibb.co.com/NnTSTrT4/DE4.jpg',
+            'https://i.ibb.co.com/4nBzGk6n/IANM0014.jpg',
+            'https://i.ibb.co.com/zVMq34Dr/IANM0584.jpg',
+            'https://i.ibb.co.com/FqjV6BkB/1.jpg',
+            'https://i.ibb.co.com/CKPBZM1m/IANM0227.jpg',
+            'https://i.ibb.co.com/gbdBz5nX/IANM0300.jpg',
+            'https://i.ibb.co.com/S4RtCchj/IANM0302.jpg',
+            'https://i.ibb.co.com/Z1FMMwkS/IANM0308.jpg',
+            'https://i.ibb.co.com/Qj8wjgcq/IANM0326.jpg',
+            'https://i.ibb.co.com/XkNZGpF1/IANM0332.jpg',
+            'https://i.ibb.co.com/GQnqgp6K/IANM0349.jpg',
+            'https://i.ibb.co.com/mMZPmBJ/IANM0404.jpg',
+            'https://i.ibb.co.com/XrzVgzZy/IANM0413.jpg',
+            'https://i.ibb.co.com/KxLNcq98/IANM0449.jpg',
+            'https://i.ibb.co.com/g5Mkc8L/IANM0485.jpg',
+            'https://i.ibb.co.com/wN4W47p4/IANM0507.jpg',
+            'https://i.ibb.co.com/MkrNR4Zf/IANM0693.jpg',
+            'https://i.ibb.co.com/4ZxF8bz1/IANM0746.jpg',
+            'https://i.ibb.co.com/G46z6dv7/IANM0753.jpg',
+            'https://i.ibb.co.com/B2yVCffp/IANM0775.jpg',
+            'https://i.ibb.co.com/LDC8Vxvw/IANM0821.jpg',
+            'https://i.ibb.co.com/RrXczGG/IANM0898.jpg',
+            'https://i.ibb.co.com/ynmnstrT/IANM0930.jpg',
+            'https://i.ibb.co.com/mCn8gs2v/IANM0963.jpg',
+            'https://i.ibb.co.com/20bw7SyB/IANM0973.jpg',
+            'https://i.ibb.co.com/6R6HwsDs/IANM1005.jpg',
+            'https://i.ibb.co.com/VWh10YHL/IANM1053.jpg',
+            'https://i.ibb.co.com/rGzwnNQf/IANM1076.jpg',
+            'https://i.ibb.co.com/nsydJxbw/IANM1117.jpg',
+            'https://i.ibb.co.com/G4hXwBZm/Tanpa-Judul-1.jpg'
         ];
 
-        // Init Images
         const bg = document.getElementById('bg-slides');
         const grid = document.getElementById('grid-container');
         const lb = document.getElementById('lb-wrapper');
 
         images.forEach((src, i) => {
-            const div = document.createElement('div');
-            div.className = 'slide-item' + (i===0?' active':'');
-            div.style.backgroundImage = `url('${src}')`;
-            bg.appendChild(div);
+            if(i < 8) {
+                const div = document.createElement('div');
+                div.className = 'slide-item' + (i===0?' active':'');
+                div.style.backgroundImage = `url('${src}')`;
+                bg.appendChild(div);
+            }
 
             const g = document.createElement('div');
-            g.className = 'aspect-square overflow-hidden rounded-xl border border-gold/30 cursor-pointer';
+            g.className = 'aspect-square overflow-hidden rounded-xl border border-gold/30 cursor-pointer reveal';
             g.onclick = () => openLB(i);
-            g.innerHTML = `<img src="${src}" class="w-full h-full object-cover" loading="lazy">`;
+            g.innerHTML = `<img src="${src}" class="w-full h-full object-cover hover:scale-110 transition duration-500" loading="lazy">`;
             grid.appendChild(g);
 
             const s = document.createElement('div');
             s.className = 'swiper-slide flex items-center justify-center';
-            s.innerHTML = `<img src="${src}" class="max-h-[85vh] object-contain">`;
+            s.innerHTML = `<img src="${src}" class="max-h-[85vh] object-contain shadow-2xl">`;
             lb.appendChild(s);
         });
 
-        // BG Auto Slide
         let curBg = 0;
         setInterval(() => {
             const items = document.querySelectorAll('.slide-item');
@@ -427,11 +522,20 @@
         }
 
         function copyAcc(val) {
-            const t = document.createElement('textarea'); t.value = val;
-            document.body.appendChild(t); t.select(); document.execCommand('copy');
+            const t = document.createElement('textarea'); 
+            t.value = val;
+            t.style.position = 'fixed';
+            document.body.appendChild(t); 
+            t.select(); 
+            try {
+                document.execCommand('copy');
+                const n = document.getElementById('toast');
+                n.classList.remove('hidden');
+                setTimeout(() => n.classList.add('hidden'), 2000);
+            } catch (err) {
+                console.error('Gagal menyalin', err);
+            }
             document.body.removeChild(t);
-            const n = document.getElementById('toast'); n.classList.remove('hidden');
-            setTimeout(() => n.classList.add('hidden'), 2000);
         }
 
         function submitRsvp(e) {
